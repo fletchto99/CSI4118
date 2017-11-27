@@ -1,0 +1,7 @@
+The client and server were tested using Java 8.
+
+To run make sure that the server & client are both compiled using Java 8 via the "javac" command.
+
+Next the server must be run first. This can be done using the "Java" command. To run the client you must pass the IP address and port (in that order) as command line arguments.
+
+Finally the client can be run using te "Java" command. Again, make sure to pass the server ip and server port as command line arguments (in that order)

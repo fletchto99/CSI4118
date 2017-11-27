@@ -1,0 +1,362 @@
+\documentclass[fleqn, 12pt]{article}
+
+% packages %
+\usepackage[includeheadfoot,headheight=15pt,margin=0.5in,left=1in,right=1in,headsep=10pt]{geometry} % page margins %
+\usepackage{mathtools, amssymb} % math %
+\usepackage{tabularx, multirow} % tables %
+\usepackage[outputdir=.latexcache]{minted} % code %
+\usepackage{graphicx} % graphics %
+\usepackage{enumerate} % lists %
+\usepackage{adjustbox} % images %
+\usepackage[T1]{fontenc} % fonts %
+\usepackage[protrusion=true,expansion=true]{microtype} % font clarity %
+\usepackage{fancyhdr} % headers and footers %
+\usepackage{lastpage} % reference page numbers %
+\usepackage{color} % colors for code %
+\usepackage{tikz} % for graphs %
+\usepackage{soul} % for strikethroughout %
+\usepackage{upquote} % Fix single quotes %
+\usepackage{etoolbox} % Conditional checks %
+\usepackage[hidelinks]{hyperref} % Hyperlinks %
+\usepackage{indentfirst} % fix indentation - only for essays %
+\usepackage[figure,table]{totalcount} % For counting tables and figures %
+\usepackage[utf8]{inputenc} % Encode as UTF-8 %
+\usepackage{biblatex} % References %
+\addbibresource{references.bib} % bib source %
+
+% Document details %
+\newcommand{\university}{University of Ottawa}
+\newcommand{\name}{Matthew Langlois}
+\newcommand{\studentNumber}{7731813}
+\newcommand{\semester}{Fall 2017}
+\newcommand{\assignmentType}{Assignment}
+\newcommand{\assignmentNumber}{3}
+\newcommand{\dueDate}{Dec. 4}
+\newcommand{\courseCode}{CSI4118}
+\newcommand{\courseTitle}{Computer Networking Protocols}
+\newcommand{\essayTitle}{<Title>} % only for essays %
+\newcommand{\essaySubtitle}{<subtitle>} % only for essays %
+\newcommand{\essayAbstract}{} % Only for essays -- leave empty for no abstract %
+
+% Center image and diagrams %
+\adjustboxset*{center}
+
+% Code settings %
+\setminted{
+    fontfamily=tt,
+    gobble=0,
+    frame=single,
+    funcnamehighlighting=true,
+    tabsize=4,
+    obeytabs=false,
+    mathescape=false
+    samepage=false,
+    showspaces=false,
+    showtabs =false,
+    texcl=false,
+    breaklines=true,
+}
+
+% inline code %
+\definecolor{codegray}{gray}{0.9}
+\newcommand{\code}[2]{\colorbox{codegray}{\mintinline{#1}{#2}}}
+
+% Code from tile %
+\newcommand{\codefile}{\inputminted}
+
+% Graphing stuff %
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{positioning}
+\usetikzlibrary{matrix}
+\usetikzlibrary{automata}
+
+% Define ceiling and floor functions %
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+% Create set compliment command %
+\newcommand{\setcomp}[1]{{#1}^{\mathsf{c}}}
+
+% Create logic command aliases %
+\newcommand{\limplies}{\rightarrow}
+\newcommand{\nequiv}{\not\equiv}
+\newcommand{\liff}{\leftrightarrow}
+
+% first page header & footer %
+\fancypagestyle{assignment}{
+    \fancyhf{}
+    \renewcommand{\footrulewidth}{0.1mm}
+    \fancyfoot[R]{\assignmentType\text{ }\assignmentNumber}
+    \fancyfoot[C]{\thepage \hspace{1pt} of \pageref{LastPage}}
+    \fancyfoot[L]{\courseCode\text{ }\semester}
+    \renewcommand{\headrulewidth}{0mm}
+}
+
+% Frontmatter for essay page numbering%
+\fancypagestyle{frontmatter}{
+    \fancyhf{}
+    \renewcommand{\footrulewidth}{0.1mm}
+    \fancyfoot[R]{\assignmentType\text{ }\assignmentNumber}
+    \fancyfoot[C]{\thepage \hspace{1pt} of \pageref{EndFrontMatter}}
+    \fancyfoot[L]{\courseCode\text{ }\semester}
+    \fancyhead[L]{\name}
+    \fancyhead[R]{\studentNumber}
+}
+
+% Essay body page numbering %
+\fancypagestyle{body}{
+    \fancyhf{}
+    \renewcommand{\footrulewidth}{0.1mm}
+    \fancyfoot[R]{\assignmentType\text{ }\assignmentNumber}
+    \fancyfoot[C]{\thepage \hspace{1pt} of \pageref{LastPage}}
+    \fancyfoot[L]{\courseCode\text{ }\semester}
+    \fancyhead[L]{\name}
+    \fancyhead[R]{\studentNumber}
+}
+
+% Page header and footers %
+\fancyhf{}
+\renewcommand{\footrulewidth}{0.1mm}
+\fancyfoot[R]{\assignmentType\text{ }\assignmentNumber}
+\fancyfoot[C]{\thepage \hspace{1pt} of \pageref{LastPage}}
+\fancyfoot[L]{\courseCode\text{ }\semester}
+\fancyhead[L]{\name}
+\fancyhead[R]{\studentNumber}
+
+% Apply headers & footer page style %
+\pagestyle{fancy}
+
+% Assignment first page header %
+\newcommand{\beginassignemnt}{
+    % Prevent paragraph indents, this isn't an English assignment! %
+    \newlength\tindent
+    \setlength{\tindent}{\parindent}
+    \setlength{\parindent}{0pt}
+
+    \thispagestyle{assignment}
+    \noindent
+    \courseTitle \hfill \university\\
+    \courseCode \hfill \semester
+    \begin{center}
+        \textbf{\assignmentType\text{ }\#\assignmentNumber}\\
+        \name \hspace{1pt} - \studentNumber\\
+        \dueDate\\
+    \end{center}
+    \vspace{6pt}
+    \hrule
+    \vspace{1.5\headsep}
+}
+
+% Essay titlepage stuff %
+\newcommand{\beginessay}{
+    % Load all citations %
+    \nocite{*}
+
+    % Special numbering for front matter %
+    \pagestyle{frontmatter}
+    \pagenumbering{roman}
+
+    % Titlepage stuff %
+    \begin{center}
+        \normalsize
+        \textsc{\university}\\[5cm]
+        \LARGE \textbf{\MakeUppercase{\essayTitle}}\\[0.5cm]
+        \large \text{ }\essaySubtitle\text{ }\\[10cm] % blank \texts are used for empty subtitles %
+        \normalsize
+        \textsc{\name}\\
+        \textsc{\studentNumber}\\
+        \textsc{\courseCode}\\
+        \textsc{\semester}\\
+        \textsc{\dueDate}
+    \end{center}
+    \thispagestyle{empty}
+    % End title page stuff %
+
+    % Table of Contents %
+    \newpage
+    \tableofcontents
+    \newpage
+
+    % If more than 1 table/figure show appropriate lists %
+    \iftotalfigures
+        \addcontentsline{toc}{section}{\listfigurename}
+        \listoffigures
+    \fi
+    \iftotaltables
+        \addcontentsline{toc}{section}{\listtablename}
+        \listoftables
+    \fi
+
+    % Display an abstract if the abstract isn't empty %
+    \ifdefempty{\essayAbstract}{}{
+        \newpage
+        \addcontentsline{toc}{section}{Abstract}
+        \begin{abstract}
+            \essayAbstract
+        \end{abstract}
+
+    }
+    \label{EndFrontMatter}
+    \newpage
+
+    % Reset page numbering %
+    \pagenumbering{arabic}
+    \pagestyle{body}
+}
+
+% Update the bibliography command to add its self to the references
+\let\oldprintbib\printbibliography
+\renewcommand{\printbibliography}{
+    \newpage
+    \oldprintbib
+    \addcontentsline{toc}{section}{References}
+    \newpage
+}
+
+% Begin the document %
+\begin{document}
+
+% makes the header for assignment/titlepage for essay %
+% \beginessay
+\beginassignemnt
+
+
+\section*{Question 1}
+
+\begin{enumerate}[a)]
+    \item
+        Yes Bob will get more bandwidth than the other users. This is because he as more connections at one given time.
+    \item
+        Even if the other users switch to parallel connections Bob must continue using parallel connections otherwise he will get less bandwidth.
+\end{enumerate}
+
+\section*{Question 2}
+
+Base64 Encode the data:
+
+$\ceil{4560/3} \cdot 4 = 6080$\\
+
+After the Base64 encoding the CR+LFs need to be inserted every 110 bytes:
+
+$\ceil{6080/110}=56$\\
+
+Insert the CR and LF bytes into:
+
+$56 \cdot 2 + 6080 = 6192$\\
+
+$\therefore$ the total size of the encoded binary file with the CR+LF bytes is 6192 bytes.
+
+\section*{Question 3}
+
+Since Alice and Bob both know each other's keys Trudy needs to intercept the communication from Bob during the initialization. To do this Trudy waits for Bob to start the communication and send her the noonce value R. Trudy then replies to bob using the same noonce value R, which Bob encrypts using $K_{AB}(R)$ and sends to Trudy. Trudy now has the encrypted value of R so she can simply reply to Bob using $K_{AB}(R)$ since she knows what the encrypted value is. Bob accepts this, believing Trudy is Alice.
+
+\section*{Question 4}
+
+\begin{enumerate}
+    \item
+        No it is not possible for bob to verify that Alice has generated the message. To do so Alice would require a unique private/public key pair for which she could use to sign a message.
+    \item
+        Yes it is possible to create a scheme in which there is confidentiality when Alice sends a message to Bob. She would need to use the certificate which Bob has provided her to encrypt the data with his public key $K_B^+$.
+
+        \begin{center}
+            \begin{tikzpicture}
+
+                % defines all of the nodes within the picture
+                \begin{scope}
+                    % node [type] number at location {contents};
+                    \node[state,label={[align=left]Alice Encrypts Message\\ using Bob's Public Key}] (1) at (0,0) [rectangle] {$K_b^+(m)=c$};
+                    \node[state] (2) at (4,0) [rectangle] {Internet};
+                    \node[state,label={[align=left]Bob Decrypts Ciphertext\\using his private key}] (3) at (8,0) [rectangle] {$K_b^-(c)=m$};
+                \end{scope}
+
+                % defines all of the paths within the picture
+                \begin{scope}[>={Stealth[black]}, every node/.style={fill=white}]
+                    %path [arrow] (start node) edge node {contents} (end node);
+                    \path [->] (1) edge node {$c$} (2);
+                    \path [->] (2) edge node {$c$} (3);
+                \end{scope}
+            \end{tikzpicture}
+        \end{center}
+\end{enumerate}
+
+\section*{Question 5}
+
+\begin{enumerate}
+    \item
+        RTP streams in different session are identified by the multicast address to which the stream is directed.
+    \item
+        RTP streams in the same session are identified by the SSRC, which is a unique number set when the stream is initialized. The SSRC number is essentially the port which the stream knows to use.
+\end{enumerate}
+
+
+\section*{Question 6}
+
+\section*{Question 7}
+
+In Mobile IP (MIP) when an agent connects to a foreign network it must first communicate with the home network. Thus when an agent connects the data must travel from the foreign network back to the home network before being redirected out. This end-to-end communication will certainly introduce some delay.
+
+\section*{Question 8}
+
+Yes it is possible for two foreign devices to have the same care of address of the same foreign agent connecting to the same network to have the same care of addresses. This happens because they need to identify what their home agent is to create the tunnel. Their proper individual addresses will be resolved when the tunnel is created to the home network.
+
+\section*{Question 9}
+
+\section*{Question 10}
+
+Pre-Computation required for encryption and decryption:\\
+
+$
+    \begin{aligned}
+        n &= p \cdot q\\\
+        n &= 3 \cdot 11\\
+        n &= 33\\
+    \end{aligned}
+$\\\\
+
+$
+    \begin{aligned}
+        \phi &= (p-1) \cdot (q-1)\\
+        \phi &= (3-1) \cdot (11-1)\\
+        \phi &= 20\\
+    \end{aligned}
+$\\\\
+
+Public key exponent:\\
+$e = 17$ since the $gcd(17, \phi) = 1$.\\
+
+
+Private key exponent:\\
+$d = 13$ since the modular inverse of $13 = e^{-1} \mod \phi$
+
+\begin{enumerate}[a)]
+    \item
+        Encryption of the word "soup"
+
+        \begin{tabular}{|c|c|}
+            \hline
+                Text (val) & Cipher Text ($m^e \mod n = c$)\\\hline
+                S (19)       & $19^17 \mod 33 = 13$ \\\hline
+                O (15)       & $15^17 \mod 33 = 27$ \\\hline
+                U (21)       & $21^17 \mod 33 = 21$ \\\hline
+                P (16)       & $16^17 \mod 33 = 25$ \\
+            \hline
+        \end{tabular}
+
+    \item
+        Decryption of the word "soup"
+
+        \begin{tabular}{|c|c|}
+            \hline
+                Cipher Text & Plain Text ($c^d \mod n = m$)\\\hline
+                13          & $13^13 \mod 33 = 19$ \\\hline
+                27          & $27^13 \mod 33 = 15$ \\\hline
+                21          & $21^13 \mod 33 = 21$ \\\hline
+                25          & $25^13 \mod 33 = 16$ \\
+            \hline
+        \end{tabular}
+
+\end{enumerate}
+
+$\therefore$ The encryption and decryption of the word SOUP works correctly using RSA.
+
+\end{document}

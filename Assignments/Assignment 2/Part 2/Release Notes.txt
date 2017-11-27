@@ -1,0 +1,6 @@
+A few assumptions I made:
+
+- The port is open and available to be bound to
+- The ip and port are passed in as command line arguments
+- The ip and port that were passed in are legitimate values
+- The client input will always be a valid command, unless in echo mode
