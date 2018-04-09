@@ -291,6 +291,14 @@ Since Alice and Bob both know each other's keys Trudy needs to intercept the com
 
 \section*{Question 6}
 
+\begin{enumerate}
+    \item
+        A SIP registrar is a SIP endpoint which accepts REGISTER requests for clients. Once a client is registered it provides a way to lookup the client within the network returning the IP and SIP URI for the client.
+
+    \item
+        The SIP registrar is similar to that of a DNS server since they both offer mechanisms to resolve information. For example the DNS server resolves the IP of the website while the SIP registrar resolves the IP of the client.
+\end{enumerate}
+
 \section*{Question 7}
 
 In Mobile IP (MIP) when an agent connects to a foreign network it must first communicate with the home network. Thus when an agent connects the data must travel from the foreign network back to the home network before being redirected out. This end-to-end communication will certainly introduce some delay.
@@ -300,6 +308,18 @@ In Mobile IP (MIP) when an agent connects to a foreign network it must first com
 Yes it is possible for two foreign devices to have the same care of address of the same foreign agent connecting to the same network to have the same care of addresses. This happens because they need to identify what their home agent is to create the tunnel. Their proper individual addresses will be resolved when the tunnel is created to the home network.
 
 \section*{Question 9}
+
+\begin{enumerate}
+    \item
+        Request-Response Mode:\\
+
+        Request response mode will generally have more overhead since each piece of information received by the manager requires two messages: the poll and the response. If the manager really only wants to be notified when a condition occurs, polling has more overhead, since many of the polling messages may indicate that the waited-for condition has not yet occurred. If a message is lost in request-response it would be obvious since the response is never received thus requiring another poll to be conducted.
+
+    \item
+        Trapping Mode:\\
+
+        Trapping only required the single message to the sender thus having less overhead. Furthermore Trapping will immediately notify the manager when an event occurs thus having much less overhead. The only downside is that if a trap message is lost, the managed device will not send another copy.
+\end{enumerate}
 
 \section*{Question 10}
 
